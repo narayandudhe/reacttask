@@ -37,6 +37,21 @@
   }
 }
 
-.redstar{
+.redstar {
   color: red;
 }
+.errordisplay{
+  color: red;
+}
+.sizeinc{
+  width: 300px;
+}
+
+input{
+  margin: 10px;
+  padding: 6px;
+  font-family: cursive;
+  border-radius: 4px;
+  font-weight: bolder;
+}
+
