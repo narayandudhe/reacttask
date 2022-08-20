@@ -36,18 +36,31 @@
     transform: rotate(360deg);
   }
 }
+body{
+  font-family: cursive;
+}
 
 .redstar {
   color: red;
 }
 .errordisplay{
   color: red;
+  display: block;
+    position: relative;
+    margin-left: 60px;
 }
 .sizeinc{
-  width: 300px;
+  width: 400px;
 }
 
 input{
+  margin: 10px;
+  padding: 6px;
+  font-family: cursive;
+  border-radius: 4px;
+  font-weight: bolder;
+}
+select{
   margin: 10px;
   padding: 6px;
   font-family: cursive;
@@ -58,11 +71,11 @@ input{
 
 .table_content{
   width: 800px;
-  margin-top: 120px;
- 
-margin-left: auto;  
-margin-right: auto;    
-text-align: center;  
+  margin-top: 120px !important;
+  margin-left: 0%;
+  margin-right: 0%;
+  text-align: center;
+  padding-top: 10%;
 
 }
 .list{
@@ -89,4 +102,73 @@ caption{
   font-size: large;
   font-weight: bold;
 
+}
+.flexdispaly{
+  float: left;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.seconddiv{
+  margin-left: 67px;
+}
+.firstdiv{
+  margin-left: 10px;
+}
+#Sex{
+  width: 157px;
+}
+#Dob{
+  width: 210px;
+}
+
+.gtype {
+  margin-left: 270px;
+}
+.econt{
+  margin-left: 106px;
+}
+#EcontactNo{
+  width: 181px;
+}
+.sdiv{
+  margin-left: 50px;
+}
+
+.scity{
+  width: 257px;
+}
+.pdiv{
+  margin-left: 19.1%;
+}
+.odiv{
+  width: 220px;
+}
+.bgdiv{
+  width: 154px;
+}
+.buttondiv{
+  float: right;
+  margin-right: 7%;
+}
+.subbutton{
+  margin: 10px;
+  border: none;
+  color: white;
+  background: green;
+  padding: 20px;
+  font-size: x-large;
+  border-radius: 5px;
+}
+.canbutton{
+  margin: 10px;
+  border: none;
+  color: red;
+  background: rgb(219, 205, 205);
+  padding: 20px;
+  font-size: x-large;
+  border-radius: 5px;
+}
+h3{
+  margin-left: 5px;
 }

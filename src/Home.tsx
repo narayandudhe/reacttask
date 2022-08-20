@@ -50,13 +50,41 @@ const initialValues={
      }
      return false;
    }),
-   Dob:Yup.string().required("Please Enter Valid Date or Age!"),
-   Sex:Yup.string().required("Please Enter sex!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
+   Dob:Yup.string().required("Please Enter Valid Date or Age!").test('dobcheck', 'Please Enter Valid Date DD/MM/YYYY format or Age!',function(){
+    var a=document.getElementById("Dob") as HTMLInputElement
+    var va=a.value.toString();
+    if(va.length>=1 && va.length <=2)
+    {
+      if(Number(va))
+      {
+        return true;
+      }
+      return false;
+      
+    }
+    else if(va.length>=3 && va.length<=10)
+    {
+      var b=va.split("/");
+      if(Number(b[0]) && Number(b[1]) && Number(b[2]))
+      {
+        var ch=new Date(b[2]+"/"+b[1]+"/"+b[0]);
+        if (isNaN(ch.getTime())) { 
+          return false;
+      }
+      else {
+          return true;
+      }
+      }
+      
+    }
+    return false;
+  }),
+   Sex:Yup.string().required("Please Choose sex!"),
    idtype:Yup.string().required("Please Choose Id Type!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
    Govtid:Yup.string().required("Please Enter Govt Id"),
    Glabel:Yup.string().required("Please Choose Gaurdian Label!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
    Gname:Yup.string().required("Please Enter Gaurdian Name!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
-   EcontactNo:Yup.number().required("Please Enter Emergency Contact No!").positive("Please Enter ValidEmergency Contact No!").test('mobilecheck', 'Please Enter 10 Digit Mobile No!',function(){
+   EcontactNo:Yup.number().required("Please Enter Emergency Contact No!").positive("Please Enter Valid Emergency Contact No!").test('mobilecheck', 'Please Enter 10 Digit Mobile No!',function(){
      var a=document.getElementById("EcontactNo") as HTMLInputElement
      var va=a.value.toString();
      if(va.length>=10 && va.length <=10)
@@ -65,12 +93,12 @@ const initialValues={
      }
      return false;
    }),
-   State:Yup.string().required("Please Enter State!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
-   City:Yup.string().required("Please Enter City!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
+   State:Yup.string().required("Please Enter State!"),
+   City:Yup.string().required("Please Enter City!"),
    Country:Yup.string().required("Please Enter Country!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
    Occuption:Yup.string().required("Please Enter Occuption!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
-   Religion:Yup.string().required("Please Enter Religion!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
-   BloodGroup:Yup.string().required("Please Enter BloodGroup!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
+   Religion:Yup.string().required("Please Enter Religion!"),
+   BloodGroup:Yup.string().required("Please Choose BloodGroup!"),
    Nationality:Yup.string().required("Please Enter Nationality!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
 
 })
@@ -112,6 +140,7 @@ const handleRemoveSpecificRow = (index:number) => {
 
   return (
     <>
+    <div>
     <Formik
     initialValues={initialValues}
     validationSchema={validationSchema}
@@ -128,33 +157,40 @@ const handleRemoveSpecificRow = (index:number) => {
       <div className="flexdispaly">
 
 
-      <div className='inputtext'>
+      <div className='inputtext firstdiv'>
       <label htmlFor='Name'>Name<span className='redstar'>*</span></label>
       <Field name='Name' type='text' className='sizeinc' id='Name' placeholder='Enter Name'/>
       <ErrorMessage component="span" className='errordisplay' name='Name'></ErrorMessage>
       </div>
 
-      <div className='inputtext'>
-      <label htmlFor='Mobile'>Mobile</label>
-      <Field name='Mobile' type='number' id='Mobile' placeholder='Enter Mobile'/>
-      <ErrorMessage component="span" className='errordisplay' name='Mobile'></ErrorMessage>
-      </div>
-
-      <div className='inputtext'>
+      <div className='inputtext seconddiv'>
       <label htmlFor='Dob'>Date of Birth or Age<span className='redstar'>*</span></label>
       <Field name='Dob' id='Dob' type='text'  placeholder='DD/MM/YYYY or Age in Years'/>
       <ErrorMessage component="span" className='errordisplay' name='Dob'></ErrorMessage>
       </div>
 
-      <div className='inputtext'>
+      <div className='inputtext seconddiv'>
       <label htmlFor='Sex'>Sex<span className='redstar'>*</span></label>
-      <Field name='Sex' id='Sex' type='text'  placeholder='Enter Sex'/>
+      <Field name="Sex" id='Sex' placeholder='Choose Sex' component="select">
+         <option value="Male">Male</option>
+         <option value="Female">Female</option>
+      </Field>
       <ErrorMessage component="span" className='errordisplay' name='Sex'></ErrorMessage>
       </div>
 
-      <div className='inputtext'>
+      
+      <div className='inputtext firstdiv'>
+      <label htmlFor='Mobile'>Mobile</label>
+      <Field name='Mobile' type='number' id='Mobile' placeholder='Enter Mobile'/>
+      <ErrorMessage component="span" className='errordisplay' name='Mobile'></ErrorMessage>
+      </div>
+
+      <div className='inputtext seconddiv gtype'>
       <label htmlFor='idtype'>Govt Issued ID</label>
-      <Field name='idtype' id='idtype'  type='text' placeholder='ID type'/>
+      <Field name="idtype" id='idtype' placeholder='Choose idtype' component="select">
+         <option value="Aadhaar Card">Aadhaar Card</option>
+         <option value="Eci Card">Eci Card</option>
+      </Field>
       <ErrorMessage component="span" className='errordisplay' name='idtype'></ErrorMessage>
       <Field name='Govtid' className='sizeinc' type='text' id='Govtid' placeholder='Enter Govt ID'/>
       <ErrorMessage component="span" className='errordisplay' name='Govtid'></ErrorMessage>
@@ -165,106 +201,133 @@ const handleRemoveSpecificRow = (index:number) => {
 
     <div>
       <h3><u>Contact Details</u></h3>
-      
-      <div className='inputtext'>
+      <div className='flexdispaly'>
+      <div className='inputtext firstdiv'>
       <label htmlFor='Glabel'>Guardian Details</label>
-      <Field name='Glabel' id='Glabel' type='text' placeholder='Enter Label'/>
+      <Field name="Glabel" id='Glabel' placeholder='Choose Glabel' component="select">
+         <option value="MR.">MR.</option>
+         <option value="MRs">MRs.</option>
+         <option value="Dr.">Dr.</option>
+      </Field>
       <ErrorMessage component="span" className='errordisplay' name='Glabel'></ErrorMessage>
       <Field name='Gname' id='Gname' type='text' placeholder='Enter Guardian Name'/>
       <ErrorMessage component="span" className='errordisplay' name='Gname'></ErrorMessage>
       </div>
 
-      <div className='inputtext'>
+      <div className='inputtext econt'>
       <label htmlFor='Email'>Email</label>
       <Field name='Email' id='Email' type='text' placeholder='Enter Email'/>
       <ErrorMessage component="span" className='errordisplay' name='Email'></ErrorMessage>
       </div>
 
-      <div className='inputtext'>
+      <div className='inputtext '>
       <label htmlFor='EcontactNo'>Emergancy Contact Number</label>
       <Field name='EcontactNo' type='number' id='EcontactNo' placeholder='Enter Emergancy No'/>
       <ErrorMessage component="span" className='errordisplay' name='EcontactNo'></ErrorMessage>
       </div>
-
+      </div>
     </div>
 
     <div>
       <h3><u>Address Details</u></h3>
-      
-      <div className='inputtext'>
+      <div className='flexdispaly'>
+      <div className='inputtext firstdiv'>
       <label htmlFor='Address'>Address</label>
       <Field name='Address' type='text' className='sizeinc' id='Address' placeholder='Enter Address'/>
       <ErrorMessage component="span" className='errordisplay' name='Address'></ErrorMessage>
       </div>
 
-      <div className='inputtext'>
+      <div className='inputtext sdiv'>
       <label htmlFor='State'>State</label>
-      <Field name='State' id='State' type='text' placeholder='Enter State'/>
+      <Field className='scity' name="State" id='State' placeholder='Choose State' component="select">
+         <option value="Maharashtra">Maharashtra</option>
+         <option value="Bihar">Bihar</option>
+         <option value="Gujrat">Gujrat</option>
+      </Field>
       <ErrorMessage component="span" className='errordisplay' name='State'></ErrorMessage>
       </div>
 
-      <div className='inputtext'>
+      <div className='inputtext seconddiv '>
       <label htmlFor='City'>City</label>
-      <Field name='City' id='City' type='text' placeholder='Enter City/Town/Village'/>
+      <Field className='scity' name="City" id='City' placeholder='Choose City/Town/Village' component="select">
+         <option value="Sultanwadi">Sultanwadi</option>
+         <option value="Aurangabad">Aurangabad</option>
+         <option value="Jaipur">Jaipur</option>
+      </Field>
       <ErrorMessage component="span" className='errordisplay' name='City'></ErrorMessage>
       </div>
 
-      <div className='inputtext'>
+      <div className='inputtext firstdiv'>
       <label htmlFor='Country'>Country</label>
       <Field name='Country' type='text' id='Country' placeholder='Enter Country'/>
       <ErrorMessage component="span" className='errordisplay' name='Country'></ErrorMessage>
       </div>
 
-      <div className='inputtext'>
+      <div className='inputtext pdiv'>
       <label htmlFor='Pincode'>Pincode</label>
       <Field name='Pincode' id='Pincode' type='text' placeholder='Enter Pincode'/>
       <ErrorMessage component="span" className='errordisplay' name='Pincode'></ErrorMessage>
       </div>
-
+      </div>
     </div>
 
     <div>
       <h3><u>Other Details</u></h3>
-      
-      <div className='inputtext'>
+      <div className='flexdispaly'>
+      <div className='inputtext firstdiv'>
       <label htmlFor='Occuption'>Occuption</label>
-      <Field name='Occuption' type='text' id='Occuption' placeholder='Enter Occuption'/>
+      <Field className='odiv' name='Occuption' type='text' id='Occuption' placeholder='Enter Occuption'/>
       <ErrorMessage component="span" className='errordisplay' name='Occuption'></ErrorMessage>
       </div>
 
       <div className='inputtext'>
       <label htmlFor='Religion'>Religion</label>
-      <Field name='Religion' type='text' id='Religion' placeholder='Enter Religion'/>
+      <Field className='odiv' name="Religion" id='Religion' placeholder='Choose Religion' component="select">
+         <option value="Hindu">Hindu</option>
+         <option value="Muslim">Muslim</option>
+         <option value="Jain">Jain</option>
+      </Field>
       <ErrorMessage component="span" className='errordisplay' name='Religion'></ErrorMessage>
       </div>
 
       <div className='inputtext'>
       <label htmlFor='Maritalstatus'>Marital Status</label>
-      <Field name='Maritalstatus' type='text' id='Maritalstatus' placeholder='Enter Marital Status'/>
+      <Field className='odiv' name="Maritalstatus" id='Maritalstatus' placeholder='Choose Marital Status' component="select">
+         <option value="UnMarried">UnMarried</option>
+         <option value="Married">Married</option>
+      </Field>
       <ErrorMessage component="span" className='errordisplay' name='Maritalstatus'></ErrorMessage>
       </div>
 
       <div className='inputtext'>
       <label htmlFor='BloodGroup'>Blood Group</label>
-      <Field name='BloodGroup' type='text' id='BloodGroup' placeholder='Enter Blood Group'/>
+      <Field className='bgdiv' name="BloodGroup" id='BloodGroup' placeholder='Choose Blood Group' component="select">
+         <option value="A+">A+</option>
+         <option value="B+">B+</option>
+         <option value="O+">O+</option>
+         <option value="A-">A-</option>
+         <option value="B-">B-</option>
+         <option value="O-">O-</option>
+         </Field>
       <ErrorMessage component="span" className='errordisplay' name='BloodGroup'></ErrorMessage>
       </div>
 
-      <div className='inputtext'>
+      <div className='inputtext firstdiv'>
       <label htmlFor='Nationality'>Nationality</label>
-      <Field name='Nationality' type='text' id='Nationality' placeholder='Enter Nationality'/>
+      <Field className='odiv' name='Nationality' type='text' id='Nationality' placeholder='Enter Nationality'/>
       <ErrorMessage component="span" className='errordisplay' name='Nationality'></ErrorMessage>
       </div>
-
+      </div>
     </div>
 
-    <div>
-    <button className='submitform' type='submit'>Submit</button>
-    <button type='reset'  className='submitform'>Reset</button>
+    <div className='buttondiv'>
+    <button type='reset'  className='canbutton'>Cancel</button>
+    <button className='subbutton' type='submit'>Submit</button>
+   
     </div>
     </Form>
     </Formik>
-
+    </div>
     <div   className='table_content list'>
 <table className='table'>
   <caption>List Of Profile</caption>
