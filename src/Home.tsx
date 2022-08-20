@@ -1,6 +1,6 @@
 import {Formik,Form,Field,ErrorMessage} from 'formik'
 import * as Yup from 'yup'
-import React,{ChangeEvent, useContext,useState} from 'react';
+import {useState} from 'react';
 
 const d=new Date();
 d.setFullYear(d.getFullYear()-1);
@@ -82,7 +82,7 @@ const initialValues={
    Sex:Yup.string().required("Please Choose sex!"),
    idtype:Yup.string().required("Please Choose Id Type!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
    Govtid:Yup.string().required("Please Enter Govt Id"),
-   Glabel:Yup.string().required("Please Choose Gaurdian Label!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
+   Glabel:Yup.string().required("Please Choose Gaurdian Label!"),
    Gname:Yup.string().required("Please Enter Gaurdian Name!").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed"),
    EcontactNo:Yup.number().required("Please Enter Emergency Contact No!").positive("Please Enter Valid Emergency Contact No!").test('mobilecheck', 'Please Enter 10 Digit Mobile No!',function(){
      var a=document.getElementById("EcontactNo") as HTMLInputElement
@@ -130,13 +130,7 @@ interface dataprops{
 function Home() {
 const [profiledata, setprofiledata] = useState<dataprops[]>([],);
 
-const handleRemoveSpecificRow = (index:number) => {
-  // const tempRows = [...profiledata,profiledata]; // to avoid  direct state mutation
-  // tempRows.splice(index, 1);
-  // setprofiledata(tempRows);
 
-
-};
 
   return (
     <>
